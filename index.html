@@ -579,7 +579,10 @@ Con esta calculadora puedes estimar el ahorro real en segundos y decidir si mere
   <strong>Límite rentable de desvío:</strong> ${textoLimite}
   <br><br>
   <div class="secondary-link">
-    <a href="https://dcsolanaprojects.github.io/coste-km-coche/">¿No te cuadra? Mira el coste real por km →</a>
+    <a href="https://dcsolanaprojects.github.io/coste-km-coche/"
+   onclick="gtag('event', 'click_ir_coste_km');">
+  ¿No te cuadra? Mira el coste real por km →
+</a>
   </div>
 `;
     }
@@ -594,5 +597,45 @@ Con esta calculadora puedes estimar el ahorro real en segundos y decidir si mere
 
     calcularAutomatico();
   </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Cuándo compensa ir a una gasolinera más barata?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Compensa cuando la diferencia de precio es alta, el desvío es pequeño y vas a repostar bastante combustible."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cuántos kilómetros merece la pena desviarse?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Depende del consumo, el precio del combustible y los litros a repostar. La calculadora muestra el límite rentable."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿La gasolina barata es peor?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "En España, el combustible cumple normativa. Las diferencias suelen ser de costes operativos."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cómo se calcula el ahorro real?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Se resta al ahorro por litro el coste de combustible del desvío."
+      }
+    }
+  ]
+}
+</script>
 </body>
 </html>
