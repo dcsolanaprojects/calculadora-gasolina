@@ -4,18 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="google-site-verification" content="_XgqKR2gdwgU2MBlX8iLD3OVsA-VEkrzggUntwiZoI8" />
-  <title>¿Compensa ir a la gasolinera más barata? Calcula tu ahorro real</title>
-  <meta name="description" content="Descubre si realmente compensa ir a una gasolinera más barata según tu consumo, el desvío y los litros que vas a repostar. Calcula tu ahorro real en segundos.">
+  <title>¿Compensa ir a una gasolinera más barata? Calculadora de ahorro real</title>
+  <meta name="description" content="Calcula si merece la pena desviarte para repostar gasolina más barata. Ten en cuenta consumo, kilómetros y litros para ver el ahorro real.">
   <meta name="robots" content="index,follow" />
   <meta name="author" content="Daniel Cabrera" />
 
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="¿Merece la pena ir a la gasolinera más barata?" />
+  <meta property="og:title" content="¿Compensa ir a una gasolinera más barata?" />
   <meta property="og:description" content="Calcula tu ahorro real según consumo, desvío y litros repostados." />
   <meta property="og:locale" content="es_ES" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="¿Merece la pena ir a la gasolinera más barata?" />
+  <meta name="twitter:title" content="¿Compensa ir a una gasolinera más barata?" />
   <meta name="twitter:description" content="Calcula tu ahorro real en segundos." />
 
   <link rel="canonical" href="https://dcsolanaprojects.github.io/calculadora-gasolina/" />
@@ -59,7 +59,7 @@
   color: #0f172a;
 }
 
-h2:not(.faq-block h2) {
+.container > h2 {
   font-size: 17px;
 }
 
@@ -311,52 +311,11 @@ p {
       color: #6b7280;
     }
 
-.link-box {
-  margin-top: 18px;
-  padding: 12px 14px;
-  border-radius: 10px;
-  background: #f8fafc;
-  border: 1px dashed #cbd5e1;
-  color: #475569;
-  line-height: 1.45;
+    .intro {
+  color: #4b5563;
+  margin-bottom: 12px;
 }
 
-.link-box strong {
-  display: block;
-  font-size: 14px;
-  color: #0f172a;
-  margin-bottom: 4px;
-}
-
-.link-box p {
-  margin: 0 0 8px;
-  font-size: 13px;
-  color: #64748b;
-}
-
-.link-box a {
-  color: #2563eb;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 700;
-}
-
-.link-box a:hover {
-  text-decoration: underline;
-}
-
-.small-link {
-  display: inline-block;
-  margin-top: 4px;
-  color: #2563eb;
-  font-size: 14px;
-  font-weight: 700;
-  text-decoration: none;
-}
-
-.small-link:hover {
-  text-decoration: underline;
-}
 
 .secondary-link {
   margin-top: 10px;
@@ -415,7 +374,7 @@ p {
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'G-TXNSN93S5L', {
+gtag('config', 'G-TXNSN93S5L', {
   page_title: 'Calculadora gasolina',
   page_path: '/calculadora-gasolina/'
 });
@@ -424,12 +383,11 @@ p {
 
 <body>
   <div class="container">
-    <h1>¿Merece la pena ir a la gasolinera más barata?</h1>
-<p style="display:none;">
-Calculadora para saber si compensa ir a una gasolinera más barata, calcular ahorro en combustible, distancia rentable y coste real del desvío.
-</p>
+    <h1>¿Compensa ir a una gasolinera más barata?</h1>
     <p class="lead">Comprueba en segundos si te compensa desviarte para repostar gasolina más barata.</p>
-
+<p class="intro">
+  Calcula el ahorro real teniendo en cuenta el consumo, los kilómetros de desvío y los litros a repostar. Así sabrás si merece la pena desviarte o no.
+</p>
 
 
     <form id="form">
@@ -518,7 +476,7 @@ Con esta calculadora puedes estimar el ahorro real en segundos y decidir si mere
   </details>
 </div>
 
-  
+ </div> 
 
   <script>
     const consumoEl = document.getElementById("consumo");
@@ -598,16 +556,16 @@ Con esta calculadora puedes estimar el ahorro real en segundos y decidir si mere
         textoLimite = `${formatKm(desvioMax)} (solo ida)`;
       }
 
-      detalleEl.innerHTML = `
-        <strong>Ahorro bruto:</strong> ${formatEuro(ahorroBruto)}<br>
-        <strong>Coste del desvío:</strong> ${formatEuro(costeDesvio)}<br>
-        <strong>Ahorro real:</strong> ${formatEuro(ahorroReal)}<br>
-        <strong>Límite rentable de desvío:</strong> ${textoLimite}
-<br><br>
-<div class="secondary-link">
-  <a href="https://dcsolanaprojects.github.io/coste-km-coche/">¿No te cuadra? Mira el coste real por km →</a>
-</div>
-      `;
+     detalleEl.innerHTML = `
+  <strong>Ahorro bruto:</strong> ${formatEuro(ahorroBruto)}<br>
+  <strong>Coste del desvío:</strong> ${formatEuro(costeDesvio)}<br>
+  <strong>Ahorro real:</strong> ${formatEuro(ahorroReal)}<br>
+  <strong>Límite rentable de desvío:</strong> ${textoLimite}
+  <br><br>
+  <div class="secondary-link">
+    <a href="https://dcsolanaprojects.github.io/coste-km-coche/">¿No te cuadra? Mira el coste real por km →</a>
+  </div>
+`;
     }
 
     [consumoEl, precioEl, desvioEl, diferenciaEl, litrosEl].forEach(input => {
