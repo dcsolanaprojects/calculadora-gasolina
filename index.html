@@ -331,6 +331,16 @@ p {
 .footer-link a:hover {
   text-decoration: underline;
 }
+
+.hint a {
+  color: #2563eb;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.hint a:hover {
+  text-decoration: underline;
+}
 .secondary-link {
   margin-top: 10px;
 }
@@ -435,6 +445,14 @@ gtag('config', 'G-TXNSN93S5L', {
   <label for="extraKm">Desgaste/mantenimiento (€/km) opcional</label>
   <input type="number" id="extraKm" placeholder="Ej: 0.05" step="0.01" min="0" inputmode="decimal">
 </div>
+<div class="field full">
+  <label for="extraKm">Desgaste/mantenimiento (€/km) opcional</label>
+  <input type="number" id="extraKm" placeholder="Ej: 0.05" step="0.01" min="0" inputmode="decimal">
+  <div class="hint">
+    Si no lo sabes, puedes calcularlo con la
+    <a id="linkHintCosteKm" href="#">herramienta de coste por km</a>.
+  </div>
+</div>
       </div>
 
       <div class="buttons">
@@ -506,6 +524,7 @@ Con esta calculadora puedes estimar el ahorro real en segundos y decidir si mere
   const diferenciaEl = document.getElementById("diferencia");
   const litrosEl = document.getElementById("litros");
   const extraKmEl = document.getElementById("extraKm");
+  const linkHintCosteKmEl = document.getElementById("linkHintCosteKm");
   const resultadoEl = document.getElementById("resultado");
   const detalleEl = document.getElementById("detalle");
   const resetBtn = document.getElementById("resetBtn");
@@ -618,6 +637,8 @@ Con esta calculadora puedes estimar el ahorro real en segundos y decidir si mere
     const linkCosteKm =
       `https://dcsolanaprojects.github.io/coste-km-coche/?consumo=${v.consumo}&precio=${v.precio}&extraCoste=${v.extraKm}&desvio=${v.desvio}&diferencia=${v.diferencia}&litros=${v.litros}&return=gasolina`;
 
+      linkHintCosteKmEl.href = linkCosteKm;
+
     detalleEl.innerHTML = `
       <strong>Ahorro bruto:</strong> ${formatEuro(ahorroBruto)}<br>
       <strong>Coste combustible del desvío:</strong> ${formatEuro(costeCombustibleDesvio)}<br>
@@ -625,10 +646,7 @@ Con esta calculadora puedes estimar el ahorro real en segundos y decidir si mere
       <strong>Coste real del desvío:</strong> ${formatEuro(costeRealDesvio)}<br>
       <strong>Ahorro real:</strong> ${formatEuro(ahorroReal)}<br>
       <strong>Límite rentable de desvío:</strong> ${textoLimite}
-      <br><br>
-      <div class="secondary-link">
-        <a href="${linkCosteKm}">${v.extraKm > 0 ? "Ajustar coste real por km →" : "Calcular coste real por km →"}</a>
-      </div>
+      
     `;
   }
 
