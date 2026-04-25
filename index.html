@@ -387,6 +387,9 @@ p {
 .hint a:hover {
   text-decoration: underline;
 }
+.link-box:empty {
+  display: none;
+}
 .secondary-link {
   margin-top: 10px;
 }
@@ -653,7 +656,7 @@ Con esta calculadora puedes estimar el ahorro real en segundos y decidir si mere
     const kmDesvioTotal = v.desvio * 2;
     const costeCombustibleDesvio = (kmDesvioTotal * v.consumo / 100) * v.precio;
     const costeOtros = kmDesvioTotal * v.extraKm;
-const costeRealDesvio = costeCombustibleDesvio + costeOtros;
+    const costeRealDesvio = costeCombustibleDesvio + costeOtros;
 
     const ahorroBruto = v.litros * v.diferencia;
     const ahorroReal = ahorroBruto - costeRealDesvio;
@@ -701,7 +704,7 @@ const costeRealDesvio = costeCombustibleDesvio + costeOtros;
       <strong>Coste real del desvío:</strong> ${formatEuro(costeRealDesvio)}<br>
       <strong>Ahorro real:</strong> ${formatEuro(ahorroReal)}<br>
       <strong>Límite rentable de desvío:</strong> ${textoLimite}<br><br>
-<span class="calc-note">Este cálculo puede incluir el coste total del coche por km, no solo combustible, si has añadido otros costes.</span>
+    <span class="calc-note">Este cálculo puede incluir el coste total del coche por km, no solo combustible, si has añadido otros costes.</span>
       
     `;
 
@@ -711,6 +714,23 @@ const costeRealDesvio = costeCombustibleDesvio + costeOtros;
       <a class="action-card" href="${linkCosteMensual}"><span>Calcular coste mensual del coche →</span><small>Estima cuánto te cuesta tener coche al mes y al año.</small></a>
       <a class="action-card" href="${linkSupermercado}"><span>Valorar otro supermercado con estos datos →</span><small>Usa consumo, precio y coste extra por km en otra decisión de ahorro.</small></a>
     `;
+    if (accionesEl) {
+  accionesEl.innerHTML = `
+    <strong>Aprovecha este resultado</strong><br><br>
+
+    <a href="https://dcsolanaprojects.github.io/coste-mensual-coche/">
+      Ver coste mensual real del coche →
+    </a><br>
+
+    <a href="https://dcsolanaprojects.github.io/coste-km-coche/?consumo=${v.consumo}&precio=${v.precio}&extraCoste=${v.extraKm}">
+      Ver coste por km →
+    </a><br>
+
+    <a href="https://dcsolanaprojects.github.io/compensa-supermercado/?consumo=${v.consumo}&precio=${v.precio}&extraCoste=${v.extraKm}&desvio=${v.desvio}">
+      Aplicar este coste al supermercado →
+    </a>
+  `;
+}
   }
 
   [consumoEl, precioEl, desvioEl, diferenciaEl, litrosEl, extraKmEl].forEach(input => {
