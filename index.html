@@ -430,6 +430,11 @@ gtag('config', 'G-TXNSN93S5L', {
           <label for="litros">Litros a repostar</label>
           <input type="number" id="litros" value="40" step="0.1" min="0" inputmode="decimal">
         </div>
+
+        <div class="field full">
+  <label for="extraKm">Desgaste/mantenimiento (€/km) opcional</label>
+  <input type="number" id="extraKm" placeholder="Ej: 0.05" step="0.01" min="0" inputmode="decimal">
+</div>
       </div>
 
       <div class="buttons">
@@ -495,159 +500,147 @@ Con esta calculadora puedes estimar el ahorro real en segundos y decidir si mere
  </div> 
 
   <script>
-    const consumoEl = document.getElementById("consumo");
-    const precioEl = document.getElementById("precio");
-    const desvioEl = document.getElementById("desvio");
-    const diferenciaEl = document.getElementById("diferencia");
-    const litrosEl = document.getElementById("litros");
-    const resultadoEl = document.getElementById("resultado");
-    const detalleEl = document.getElementById("detalle");
-    const resetBtn = document.getElementById("resetBtn");
+  const consumoEl = document.getElementById("consumo");
+  const precioEl = document.getElementById("precio");
+  const desvioEl = document.getElementById("desvio");
+  const diferenciaEl = document.getElementById("diferencia");
+  const litrosEl = document.getElementById("litros");
+  const extraKmEl = document.getElementById("extraKm");
+  const resultadoEl = document.getElementById("resultado");
+  const detalleEl = document.getElementById("detalle");
+  const resetBtn = document.getElementById("resetBtn");
 
-    function formatEuro(num) {
-      return num.toLocaleString("es-ES", {
-        style: "currency",
-        currency: "EUR",
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      });
-    }
-
-    function formatKm(num) {
-      return num.toLocaleString("es-ES", {
-        minimumFractionDigits: 1,
-        maximumFractionDigits: 1
-      }) + " km";
-    }
-
-    function getValues() {
   const params = new URLSearchParams(window.location.search);
 
-  return {
-    consumo: parseFloat(consumoEl.value),
-    precio: parseFloat(precioEl.value),
-    desvio: parseFloat(desvioEl.value),
-    diferencia: parseFloat(diferenciaEl.value),
-    litros: parseFloat(litrosEl.value),
-    costeKm: parseFloat(params.get("costeKm"))
-  };
-}
-
-    function valuesAreValid(v) {
-      return [v.consumo, v.precio, v.desvio, v.diferencia, v.litros].every(
-        n => !isNaN(n) && n >= 0
-      ) && v.consumo > 0 && v.precio > 0;
+  function setValueFromParam(input, paramName) {
+    const value = params.get(paramName);
+    if (value !== null && value !== "") {
+      input.value = value;
     }
+  }
 
-    function calcularAutomatico() {
-      const v = getValues();
+  setValueFromParam(consumoEl, "consumo");
+  setValueFromParam(precioEl, "precio");
+  setValueFromParam(desvioEl, "desvio");
+  setValueFromParam(diferenciaEl, "diferencia");
+  setValueFromParam(litrosEl, "litros");
+  setValueFromParam(extraKmEl, "extraCoste");
 
-      if (!valuesAreValid(v)) {
-        resultadoEl.className = "result bad";
-        resultadoEl.textContent = "Revisa los datos: introduce valores válidos.";
-        detalleEl.innerHTML = "";
-        return;
-      }
+  const costeKmParam = parseFloat(params.get("costeKm"));
 
-      const kmDesvioTotal = v.desvio * 2;
-const costeCombustibleDesvio = (kmDesvioTotal * v.consumo / 100) * v.precio;
+  if (!isNaN(costeKmParam) && costeKmParam > 0) {
+    const consumoInicial = parseFloat(consumoEl.value);
+    const precioInicial = parseFloat(precioEl.value);
 
-const usaCosteRealKm = !isNaN(v.costeKm) && v.costeKm > 0;
-const costeRealDesvio = usaCosteRealKm ? kmDesvioTotal * v.costeKm : costeCombustibleDesvio;
-const costeDesgaste = usaCosteRealKm ? Math.max(0, costeRealDesvio - costeCombustibleDesvio) : 0;
-
-const ahorroBruto = v.litros * v.diferencia;
-const ahorroReal = ahorroBruto - costeRealDesvio;
-      const costeKmParaLimite = usaCosteRealKm ? v.costeKm : (v.consumo / 100) * v.precio;
-
-const desvioMax = v.diferencia > 0 && v.litros > 0 && costeKmParaLimite > 0
-  ? (v.litros * v.diferencia) / (2 * costeKmParaLimite)
-  : 0;
-
-      if (v.diferencia <= 0 || v.litros <= 0) {
-        resultadoEl.className = "result neutral";
-        resultadoEl.textContent = "Con estos datos no hay ahorro potencial que comparar.";
-      } else if (ahorroReal > 0.05) {
-        resultadoEl.className = "result ok";
-        resultadoEl.textContent = `Sí compensa. Ahorras aproximadamente ${formatEuro(ahorroReal)}.`;
-      } else if (ahorroReal < -0.05) {
-        resultadoEl.className = "result bad";
-        resultadoEl.textContent = `No compensa. Perderías ${formatEuro(Math.abs(ahorroReal))} con ese desvío.`;
-      } else {
-        resultadoEl.className = "result neutral";
-        resultadoEl.textContent = "Estás casi en empate. La diferencia real es mínima.";
-      }
-
-      let textoLimite = "Con estos datos, no compensa prácticamente ningún desvío.";
-      if (isFinite(desvioMax) && desvioMax > 0) {
-        textoLimite = `${formatKm(desvioMax)} (solo ida)`;
-      }
-
-     const linkCosteKm = `https://dcsolanaprojects.github.io/coste-km-coche/?consumo=${v.consumo}&precio=${v.precio}&return=gasolina`;
-
-detalleEl.innerHTML = `
-  <strong>Ahorro bruto:</strong> ${formatEuro(ahorroBruto)}<br>
-  <strong>Coste combustible del desvío:</strong> ${formatEuro(costeCombustibleDesvio)}<br>
-  <strong>Coste desgaste/mantenimiento:</strong> ${usaCosteRealKm ? formatEuro(costeDesgaste) : "no incluido"}<br>
-  ${usaCosteRealKm ? `<strong>Coste real del desvío:</strong> ${formatEuro(costeRealDesvio)}<br>` : ""}
-  <strong>Ahorro real:</strong> ${formatEuro(ahorroReal)}<br>
-  <strong>Límite rentable de desvío:</strong> ${textoLimite}
-  <br><br>
-  <div class="secondary-link">
-    <a href="${linkCosteKm}">${usaCosteRealKm ? "Recalcular coste real por km →" : "Calcular coste real por km →"}</a>
-  </div>
-`;
+    if (!isNaN(consumoInicial) && !isNaN(precioInicial) && consumoInicial > 0 && precioInicial > 0) {
+      const costeCombustibleKm = (consumoInicial / 100) * precioInicial;
+      const desgasteKm = Math.max(0, costeKmParam - costeCombustibleKm);
+      extraKmEl.value = desgasteKm.toFixed(2);
     }
+  }
 
-    [consumoEl, precioEl, desvioEl, diferenciaEl, litrosEl].forEach(input => {
-      input.addEventListener("input", calcularAutomatico);
+  function formatEuro(num) {
+    return num.toLocaleString("es-ES", {
+      style: "currency",
+      currency: "EUR",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
     });
+  }
 
-    resetBtn.addEventListener("click", () => {
-      setTimeout(calcularAutomatico, 0);
-    });
+  function formatKm(num) {
+    return num.toLocaleString("es-ES", {
+      minimumFractionDigits: 1,
+      maximumFractionDigits: 1
+    }) + " km";
+  }
 
-    calcularAutomatico();
-  </script>
-  <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "¿Cuándo compensa ir a una gasolinera más barata?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Compensa cuando la diferencia de precio es alta, el desvío es pequeño y vas a repostar bastante combustible."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "¿Cuántos kilómetros merece la pena desviarse?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Depende del consumo, el precio del combustible y los litros a repostar. La calculadora muestra el límite rentable."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "¿La gasolina barata es peor?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "En España, el combustible cumple normativa. Las diferencias suelen ser de costes operativos."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "¿Cómo se calcula el ahorro real?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Se resta al ahorro por litro el coste de combustible del desvío."
-      }
+  function getValues() {
+    return {
+      consumo: parseFloat(consumoEl.value),
+      precio: parseFloat(precioEl.value),
+      desvio: parseFloat(desvioEl.value),
+      diferencia: parseFloat(diferenciaEl.value),
+      litros: parseFloat(litrosEl.value),
+      extraKm: parseFloat(extraKmEl.value) || 0
+    };
+  }
+
+  function valuesAreValid(v) {
+    return [v.consumo, v.precio, v.desvio, v.diferencia, v.litros, v.extraKm].every(
+      n => !isNaN(n) && n >= 0
+    ) && v.consumo > 0 && v.precio > 0;
+  }
+
+  function calcularAutomatico() {
+    const v = getValues();
+
+    if (!valuesAreValid(v)) {
+      resultadoEl.className = "result bad";
+      resultadoEl.textContent = "Revisa los datos: introduce valores válidos.";
+      detalleEl.innerHTML = "";
+      return;
     }
-  ]
-}
+
+    const kmDesvioTotal = v.desvio * 2;
+    const costeCombustibleDesvio = (kmDesvioTotal * v.consumo / 100) * v.precio;
+    const costeDesgaste = kmDesvioTotal * v.extraKm;
+    const costeRealDesvio = costeCombustibleDesvio + costeDesgaste;
+
+    const ahorroBruto = v.litros * v.diferencia;
+    const ahorroReal = ahorroBruto - costeRealDesvio;
+
+    const costeKmParaLimite = (v.consumo / 100) * v.precio + v.extraKm;
+
+    const desvioMax = v.diferencia > 0 && v.litros > 0 && costeKmParaLimite > 0
+      ? (v.litros * v.diferencia) / (2 * costeKmParaLimite)
+      : 0;
+
+    if (v.diferencia <= 0 || v.litros <= 0) {
+      resultadoEl.className = "result neutral";
+      resultadoEl.textContent = "Con estos datos no hay ahorro potencial que comparar.";
+    } else if (ahorroReal > 0.05) {
+      resultadoEl.className = "result ok";
+      resultadoEl.textContent = `Sí compensa. Ahorras aproximadamente ${formatEuro(ahorroReal)}.`;
+    } else if (ahorroReal < -0.05) {
+      resultadoEl.className = "result bad";
+      resultadoEl.textContent = `No compensa. Perderías ${formatEuro(Math.abs(ahorroReal))} con ese desvío.`;
+    } else {
+      resultadoEl.className = "result neutral";
+      resultadoEl.textContent = "Estás casi en empate. La diferencia real es mínima.";
+    }
+
+    let textoLimite = "Con estos datos, no compensa prácticamente ningún desvío.";
+    if (isFinite(desvioMax) && desvioMax > 0) {
+      textoLimite = `${formatKm(desvioMax)} (solo ida)`;
+    }
+
+    const linkCosteKm =
+      `https://dcsolanaprojects.github.io/coste-km-coche/?consumo=${v.consumo}&precio=${v.precio}&extraCoste=${v.extraKm}&desvio=${v.desvio}&diferencia=${v.diferencia}&litros=${v.litros}&return=gasolina`;
+
+    detalleEl.innerHTML = `
+      <strong>Ahorro bruto:</strong> ${formatEuro(ahorroBruto)}<br>
+      <strong>Coste combustible del desvío:</strong> ${formatEuro(costeCombustibleDesvio)}<br>
+      <strong>Coste desgaste/mantenimiento:</strong> ${v.extraKm > 0 ? formatEuro(costeDesgaste) : "no incluido"}<br>
+      <strong>Coste real del desvío:</strong> ${formatEuro(costeRealDesvio)}<br>
+      <strong>Ahorro real:</strong> ${formatEuro(ahorroReal)}<br>
+      <strong>Límite rentable de desvío:</strong> ${textoLimite}
+      <br><br>
+      <div class="secondary-link">
+        <a href="${linkCosteKm}">${v.extraKm > 0 ? "Ajustar coste real por km →" : "Calcular coste real por km →"}</a>
+      </div>
+    `;
+  }
+
+  [consumoEl, precioEl, desvioEl, diferenciaEl, litrosEl, extraKmEl].forEach(input => {
+    input.addEventListener("input", calcularAutomatico);
+  });
+
+  resetBtn.addEventListener("click", () => {
+    setTimeout(calcularAutomatico, 0);
+  });
+
+  calcularAutomatico();
 </script>
 </body>
 </html>
