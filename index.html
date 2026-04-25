@@ -582,8 +582,14 @@ Con esta calculadora puedes estimar el ahorro real en segundos y decidir si mere
 
   const params = new URLSearchParams(window.location.search);
   
-const vieneDeCosteMensual = params.get("origen") === "coste-mensual";
+const vieneDeCosteMensual =
+  params.get("origen") === "coste-mensual" ||
+  params.get("kmAnuales") !== null;
 const hintCosteKmEl = document.getElementById("hintCosteKm");
+
+const vieneDeCosteMensual =
+  params.get("origen") === "coste-mensual" ||
+  params.get("kmAnuales") !== null;
 
 if (hintCosteKmEl && vieneDeCosteMensual) {
   hintCosteKmEl.innerHTML = `
