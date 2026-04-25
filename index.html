@@ -521,14 +521,17 @@ Con esta calculadora puedes estimar el ahorro real en segundos y decidir si mere
     }
 
     function getValues() {
-      return {
-        consumo: parseFloat(consumoEl.value),
-        precio: parseFloat(precioEl.value),
-        desvio: parseFloat(desvioEl.value),
-        diferencia: parseFloat(diferenciaEl.value),
-        litros: parseFloat(litrosEl.value)
-      };
-    }
+  const params = new URLSearchParams(window.location.search);
+
+  return {
+    consumo: parseFloat(consumoEl.value),
+    precio: parseFloat(precioEl.value),
+    desvio: parseFloat(desvioEl.value),
+    diferencia: parseFloat(diferenciaEl.value),
+    litros: parseFloat(litrosEl.value),
+    costeKm: parseFloat(params.get("costeKm"))
+  };
+}
 
     function valuesAreValid(v) {
       return [v.consumo, v.precio, v.desvio, v.diferencia, v.litros].every(
@@ -546,12 +549,20 @@ Con esta calculadora puedes estimar el ahorro real en segundos y decidir si mere
         return;
       }
 
-      const costeDesvio = (v.desvio * 2 * v.consumo / 100) * v.precio;
-      const ahorroBruto = v.litros * v.diferencia;
-      const ahorroReal = ahorroBruto - costeDesvio;
-      const desvioMax = v.diferencia > 0 && v.litros > 0
-        ? (v.litros * v.diferencia * 100) / (2 * v.consumo * v.precio)
-        : 0;
+      const kmDesvioTotal = v.desvio * 2;
+const costeCombustibleDesvio = (kmDesvioTotal * v.consumo / 100) * v.precio;
+
+const usaCosteRealKm = !isNaN(v.costeKm) && v.costeKm > 0;
+const costeRealDesvio = usaCosteRealKm ? kmDesvioTotal * v.costeKm : costeCombustibleDesvio;
+const costeDesgaste = usaCosteRealKm ? Math.max(0, costeRealDesvio - costeCombustibleDesvio) : 0;
+
+const ahorroBruto = v.litros * v.diferencia;
+const ahorroReal = ahorroBruto - costeRealDesvio;
+      const costeKmParaLimite = usaCosteRealKm ? v.costeKm : (v.consumo / 100) * v.precio;
+
+const desvioMax = v.diferencia > 0 && v.litros > 0 && costeKmParaLimite > 0
+  ? (v.litros * v.diferencia) / (2 * costeKmParaLimite)
+  : 0;
 
       if (v.diferencia <= 0 || v.litros <= 0) {
         resultadoEl.className = "result neutral";
@@ -572,17 +583,18 @@ Con esta calculadora puedes estimar el ahorro real en segundos y decidir si mere
         textoLimite = `${formatKm(desvioMax)} (solo ida)`;
       }
 
-     detalleEl.innerHTML = `
+     const linkCosteKm = `https://dcsolanaprojects.github.io/coste-km-coche/?consumo=${v.consumo}&precio=${v.precio}&return=gasolina`;
+
+detalleEl.innerHTML = `
   <strong>Ahorro bruto:</strong> ${formatEuro(ahorroBruto)}<br>
-  <strong>Coste del desvío:</strong> ${formatEuro(costeDesvio)}<br>
+  <strong>Coste combustible del desvío:</strong> ${formatEuro(costeCombustibleDesvio)}<br>
+  <strong>Coste desgaste/mantenimiento:</strong> ${usaCosteRealKm ? formatEuro(costeDesgaste) : "no incluido"}<br>
+  ${usaCosteRealKm ? `<strong>Coste real del desvío:</strong> ${formatEuro(costeRealDesvio)}<br>` : ""}
   <strong>Ahorro real:</strong> ${formatEuro(ahorroReal)}<br>
   <strong>Límite rentable de desvío:</strong> ${textoLimite}
   <br><br>
   <div class="secondary-link">
-    <a href="https://dcsolanaprojects.github.io/coste-km-coche/"
-   onclick="gtag('event', 'click_ir_coste_km');">
-  ¿No te cuadra? Mira el coste real por km →
-</a>
+    <a href="${linkCosteKm}">${usaCosteRealKm ? "Recalcular coste real por km →" : "Calcular coste real por km →"}</a>
   </div>
 `;
     }
