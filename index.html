@@ -191,6 +191,52 @@ p {
   display: none;
 }
 
+    .action-box {
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: 12px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      line-height: 1.5;
+    }
+
+    .action-box strong {
+      display: block;
+      margin-bottom: 12px;
+      color: #111827;
+    }
+
+    .action-card {
+      display: block;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 10px;
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      text-decoration: none;
+    }
+
+    .action-card:hover {
+      text-decoration: none;
+      border-color: #bfdbfe;
+      background: #eff6ff;
+    }
+
+    .action-card span {
+      display: block;
+      color: #2563eb;
+      font-weight: 700;
+    }
+
+    .action-card small {
+      display: block;
+      margin-top: 4px;
+      color: #6b7280;
+      line-height: 1.4;
+      font-weight: 400;
+    }
+
+
     .lead {
       font-weight: 700;
       color: #111827;
@@ -461,6 +507,8 @@ gtag('config', 'G-TXNSN93S5L', {
    
     <div id="detalle" class="breakdown"></div>
 
+    <div id="acciones" class="action-box"></div>
+
     <p class="calc-note">
       El resultado se actualiza automáticamente al cambiar cualquier dato.
     </p>
@@ -509,11 +557,6 @@ Con esta calculadora puedes estimar el ahorro real en segundos y decidir si mere
     </p>
   </details>
 </div>
-<div class="breakdown">
-  <strong>Herramientas relacionadas</strong><br>
-  <a href="https://dcsolanaprojects.github.io/coste-mensual-coche/">Calcular el coste mensual real de tu coche →</a><br>
-  <a href="https://dcsolanaprojects.github.io/coste-km-coche/">Calcular el coste real por kilómetro →</a>
-</div>
 <div class="footer-link">
   <a href="https://dcsolanaprojects.github.io/">Ver todas las herramientas →</a>
 </div>
@@ -529,6 +572,7 @@ Con esta calculadora puedes estimar el ahorro real en segundos y decidir si mere
   const linkHintCosteKmEl = document.getElementById("linkHintCosteKm");
   const resultadoEl = document.getElementById("resultado");
   const detalleEl = document.getElementById("detalle");
+  const accionesEl = document.getElementById("acciones");
   const resetBtn = document.getElementById("resetBtn");
 
   const params = new URLSearchParams(window.location.search);
@@ -600,6 +644,7 @@ Con esta calculadora puedes estimar el ahorro real en segundos y decidir si mere
       resultadoEl.className = "result bad";
       resultadoEl.textContent = "Revisa los datos: introduce valores válidos.";
       detalleEl.innerHTML = "";
+      accionesEl.innerHTML = "";
       return;
     }
 
@@ -639,6 +684,12 @@ Con esta calculadora puedes estimar el ahorro real en segundos y decidir si mere
     const linkCosteKm =
       `https://dcsolanaprojects.github.io/coste-km-coche/?consumo=${v.consumo}&precio=${v.precio}&extraCoste=${v.extraKm}&desvio=${v.desvio}&diferencia=${v.diferencia}&litros=${v.litros}&return=gasolina`;
 
+    const linkCosteMensual =
+      `https://dcsolanaprojects.github.io/coste-mensual-coche/?consumo=${v.consumo}&precio=${v.precio}`;
+
+    const linkSupermercado =
+      `https://dcsolanaprojects.github.io/compensa-supermercado/?consumo=${v.consumo}&precio=${v.precio}&extraCoste=${v.extraKm}`;
+
       linkHintCosteKmEl.href = linkCosteKm;
 
     detalleEl.innerHTML = `
@@ -649,6 +700,13 @@ Con esta calculadora puedes estimar el ahorro real en segundos y decidir si mere
       <strong>Ahorro real:</strong> ${formatEuro(ahorroReal)}<br>
       <strong>Límite rentable de desvío:</strong> ${textoLimite}
       
+    `;
+
+    accionesEl.innerHTML = `
+      <strong>Aprovecha este resultado</strong>
+      <a class="action-card" href="${linkCosteKm}"><span>Ver coste real por km →</span><small>Ajusta el coste de desgaste/mantenimiento para afinar este cálculo.</small></a>
+      <a class="action-card" href="${linkCosteMensual}"><span>Calcular coste mensual del coche →</span><small>Estima cuánto te cuesta tener coche al mes y al año.</small></a>
+      <a class="action-card" href="${linkSupermercado}"><span>Valorar otro supermercado con estos datos →</span><small>Usa consumo, precio y coste extra por km en otra decisión de ahorro.</small></a>
     `;
   }
 
