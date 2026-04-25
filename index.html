@@ -619,8 +619,12 @@ if (toggleAdvancedEl && advancedBlockEl) {
       if (isHidden) {
         // Cuando lo ABRE manualmente
         hintCosteKmEl.innerHTML = `
-          Introduce aquí el coste total de tu coche por km (incluyendo mantenimiento, seguro o depreciación si quieres afinar el cálculo).
-        `;
+  Introduce aquí el coste total de tu coche por km, incluyendo mantenimiento, seguro o depreciación si quieres afinar el cálculo.
+  Si no lo sabes, puedes calcularlo
+  <a href="https://dcsolanaprojects.github.io/coste-mensual-coche/?consumo=${consumoEl.value || ""}&precio=${precioEl.value || ""}">
+    aquí
+  </a>.
+`;
       } else {
         // Cuando lo CIERRA
         hintCosteKmEl.innerHTML = hintDefault;
