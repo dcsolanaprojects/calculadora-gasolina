@@ -597,9 +597,9 @@ if (hintCosteKmEl && vieneDeCosteMensual) {
   hintCosteKmEl.innerHTML = `
     Estás utilizando un coste completo por km que incluye mantenimiento, seguro, impuestos y depreciación.
     Puedes modificarlo manualmente o ajustar el coste mensual del coche
-    <a href="https://dcsolanaprojects.github.io/coste-mensual-coche/?consumo=${params.get("consumo") || ""}&precio=${params.get("precio") || ""}">
-      aquí
-    </a>.
+    <a href="https://dcsolanaprojects.github.io/coste-mensual-coche/?consumo=${params.get("consumo") || ""}&precio=${params.get("precio") || ""}&extraCoste=${params.get("extraCoste") || extraKmEl.value || ""}&desvio=${params.get("desvio") || desvioEl.value || ""}&diferencia=${params.get("diferencia") || diferenciaEl.value || ""}&litros=${params.get("litros") || litrosEl.value || ""}&return=gasolina">
+  aquí
+</a>.
   `;
 }
 
