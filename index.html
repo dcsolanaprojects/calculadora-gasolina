@@ -574,7 +574,7 @@ Con esta calculadora puedes estimar el ahorro real en segundos y decidir si mere
   const diferenciaEl = document.getElementById("diferencia");
   const litrosEl = document.getElementById("litros");
   const extraKmEl = document.getElementById("extraKm");
-  const linkHintCosteKmEl = document.getElementById("linkHintCosteKm");
+  
   const resultadoEl = document.getElementById("resultado");
   const detalleEl = document.getElementById("detalle");
   const accionesEl = document.getElementById("acciones");
@@ -695,7 +695,7 @@ Con esta calculadora puedes estimar el ahorro real en segundos y decidir si mere
     const linkSupermercado =
       `https://dcsolanaprojects.github.io/compensa-supermercado/?consumo=${v.consumo}&precio=${v.precio}&extraCoste=${v.extraKm}`;
 
-      linkHintCosteKmEl.href = linkCosteKm;
+    
 
     detalleEl.innerHTML = `
       <strong>Ahorro bruto:</strong> ${formatEuro(ahorroBruto)}<br>
@@ -710,27 +710,11 @@ Con esta calculadora puedes estimar el ahorro real en segundos y decidir si mere
 
     accionesEl.innerHTML = `
       <strong>Aprovecha este resultado</strong>
-      <a class="action-card" href="${linkCosteKm}"><span>Ver coste real por km →</span><small>Ajusta el coste de desgaste/mantenimiento para afinar este cálculo.</small></a>
+      <a class="action-card" href="${linkCosteKm}"><span>Ver coste real por km →</span><small>Revisa el coste por kilómetro usado en este cálculo.</small></a>
       <a class="action-card" href="${linkCosteMensual}"><span>Calcular coste mensual del coche →</span><small>Estima cuánto te cuesta tener coche al mes y al año.</small></a>
-      <a class="action-card" href="${linkSupermercado}"><span>Valorar otro supermercado con estos datos →</span><small>Usa consumo, precio y coste extra por km en otra decisión de ahorro.</small></a>
+      <a class="action-card" href="${linkSupermercado}"><span>Valorar otro supermercado con estos datos →</span><small>Usa consumo, precio y coste completo por km en otra decisión de ahorro.</small></a>
     `;
-    if (accionesEl) {
-  accionesEl.innerHTML = `
-    <strong>Aprovecha este resultado</strong><br><br>
-
-    <a href="https://dcsolanaprojects.github.io/coste-mensual-coche/">
-      Ver coste mensual real del coche →
-    </a><br>
-
-    <a href="https://dcsolanaprojects.github.io/coste-km-coche/?consumo=${v.consumo}&precio=${v.precio}&extraCoste=${v.extraKm}">
-      Ver coste por km →
-    </a><br>
-
-    <a href="https://dcsolanaprojects.github.io/compensa-supermercado/?consumo=${v.consumo}&precio=${v.precio}&extraCoste=${v.extraKm}&desvio=${v.desvio}">
-      Aplicar este coste al supermercado →
-    </a>
-  `;
-}
+    
   }
 
   [consumoEl, precioEl, desvioEl, diferenciaEl, litrosEl, extraKmEl].forEach(input => {
