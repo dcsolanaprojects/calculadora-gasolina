@@ -494,7 +494,7 @@ gtag('config', 'G-TXNSN93S5L', {
 <div class="field full">
   <label for="extraKm">Coste completo del coche por km (opcional)</label>
 <input type="number" id="extraKm" placeholder="Ej: 0.05" step="0.01" min="0" inputmode="decimal">
-<div class="hint">
+<div class="hint" id="hintCosteKm">
   Déjalo vacío si quieres calcular solo el combustible.
   Si quieres incluir mantenimiento, seguro, impuestos o depreciación,
   calcula primero el
@@ -581,7 +581,16 @@ Con esta calculadora puedes estimar el ahorro real en segundos y decidir si mere
   const resetBtn = document.getElementById("resetBtn");
 
   const params = new URLSearchParams(window.location.search);
+  
+const vieneDeCosteMensual = params.get("origen") === "coste-mensual";
+const hintCosteKmEl = document.getElementById("hintCosteKm");
 
+if (hintCosteKmEl && vieneDeCosteMensual) {
+  hintCosteKmEl.innerHTML = `
+    Estás utilizando un coste completo por km que incluye mantenimiento, seguro, impuestos y depreciación.
+    Puedes modificarlo manualmente si quieres ajustar el cálculo.
+  `;
+}
   function setValueFromParam(input, paramName) {
     const value = params.get(paramName);
     if (value !== null && value !== "") {
