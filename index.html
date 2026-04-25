@@ -597,7 +597,7 @@ if (hintCosteKmEl && vieneDeCosteMensual) {
   hintCosteKmEl.innerHTML = `
     Estás utilizando un coste completo por km que incluye mantenimiento, seguro, impuestos y depreciación.
     Puedes modificarlo manualmente o calcular el coste mensual real del coche
-    <a href="https://dcsolanaprojects.github.io/coste-mensual-coche/?consumo=${params.get("consumo") || ""}&precio=${params.get("precio") || ""}&desvio=${params.get("desvio") || desvioEl.value || ""}&diferencia=${params.get("diferencia") || diferenciaEl.value || ""}&litros=${params.get("litros") || litrosEl.value || ""}&return=gasolina"
+    <a href="https://dcsolanaprojects.github.io/coste-mensual-coche/?consumo=${params.get("consumo") || ""}&precio=${params.get("precio") || ""}&desvio=${params.get("desvio") || desvioEl.value || ""}&diferencia=${params.get("diferencia") || diferenciaEl.value || ""}&litros=${params.get("litros") || litrosEl.value || ""}&return=gasolina">
   aquí
 </a>.
   `;
@@ -621,7 +621,7 @@ if (toggleAdvancedEl && advancedBlockEl) {
         hintCosteKmEl.innerHTML = `
   Introduce aquí el coste total de tu coche por km, incluyendo mantenimiento, seguro o depreciación si quieres afinar el cálculo.
   Si no lo sabes, puedes calcular el coste mensual real del coche
-  <a href="https://dcsolanaprojects.github.io/coste-mensual-coche/?consumo=${consumoEl.value || ""}&precio=${precioEl.value || ""}&desvio=${desvioEl.value || ""}&diferencia=${diferenciaEl.value || ""}&litros=${litrosEl.value || ""}&return=gasolina"
+  <a href="https://dcsolanaprojects.github.io/coste-mensual-coche/?consumo=${consumoEl.value || ""}&precio=${precioEl.value || ""}&desvio=${desvioEl.value || ""}&diferencia=${diferenciaEl.value || ""}&litros=${litrosEl.value || ""}&return=gasolina">
     aquí
   </a>.
 `;
