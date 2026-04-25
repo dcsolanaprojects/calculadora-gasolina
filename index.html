@@ -588,7 +588,7 @@ Con esta calculadora puedes estimar el ahorro real en segundos y decidir si mere
 const toggleAdvancedEl = document.getElementById("toggleAdvanced");
 const advancedBlockEl = document.getElementById("advancedBlock");
 const hintCosteKmEl = document.getElementById("hintCosteKm");
-
+const hintDefault = hintCosteKmEl ? hintCosteKmEl.innerHTML : "";
 const vieneDeCosteMensual =
   params.get("origen") === "coste-mensual" ||
   params.get("kmAnuales") !== null;
@@ -613,6 +613,19 @@ if (toggleAdvancedEl && advancedBlockEl) {
     toggleAdvancedEl.textContent = isHidden
       ? "Ocultar coste completo del coche"
       : "Usar coste completo del coche →";
+
+    // 🔥 AQUÍ está la mejora UX
+    if (hintCosteKmEl && !vieneDeCosteMensual) {
+      if (isHidden) {
+        // Cuando lo ABRE manualmente
+        hintCosteKmEl.innerHTML = `
+          Introduce aquí el coste total de tu coche por km (incluyendo mantenimiento, seguro o depreciación si quieres afinar el cálculo).
+        `;
+      } else {
+        // Cuando lo CIERRA
+        hintCosteKmEl.innerHTML = hintDefault;
+      }
+    }
   });
 }
 
