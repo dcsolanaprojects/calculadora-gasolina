@@ -596,7 +596,7 @@ const vieneDeCosteMensual =
 if (hintCosteKmEl && vieneDeCosteMensual) {
   hintCosteKmEl.innerHTML = `
     Estás utilizando un coste completo por km que incluye mantenimiento, seguro, impuestos y depreciación.
-    Puedes modificarlo manualmente o ajustar el coste mensual del coche
+    Puedes modificarlo manualmente o calcular el coste mensual real del coche
     <a href="https://dcsolanaprojects.github.io/coste-mensual-coche/?consumo=${params.get("consumo") || ""}&precio=${params.get("precio") || ""}&extraCoste=${params.get("extraCoste") || extraKmEl.value || ""}&desvio=${params.get("desvio") || desvioEl.value || ""}&diferencia=${params.get("diferencia") || diferenciaEl.value || ""}&litros=${params.get("litros") || litrosEl.value || ""}&return=gasolina">
   aquí
 </a>.
@@ -620,8 +620,8 @@ if (toggleAdvancedEl && advancedBlockEl) {
         // Cuando lo ABRE manualmente
         hintCosteKmEl.innerHTML = `
   Introduce aquí el coste total de tu coche por km, incluyendo mantenimiento, seguro o depreciación si quieres afinar el cálculo.
-  Si no lo sabes, puedes calcularlo
-  <a href="https://dcsolanaprojects.github.io/coste-mensual-coche/?consumo=${consumoEl.value || ""}&precio=${precioEl.value || ""}">
+  Si no lo sabes, puedes calcular el coste mensual real del coche
+  <a href="https://dcsolanaprojects.github.io/coste-mensual-coche/?consumo=${consumoEl.value || ""}&precio=${precioEl.value || ""}&return=gasolina">
     aquí
   </a>.
 `;
@@ -747,8 +747,7 @@ if (vieneDeCosteMensual && advancedBlockEl) {
       `https://dcsolanaprojects.github.io/coste-km-coche/?consumo=${v.consumo}&precio=${v.precio}&extraCoste=${v.extraKm}&desvio=${v.desvio}&diferencia=${v.diferencia}&litros=${v.litros}&return=gasolina`;
 
     const linkCosteMensual =
-  `https://dcsolanaprojects.github.io/coste-mensual-coche/?consumo=${v.consumo}&precio=${v.precio}&extraCoste=${v.extraKm}&desvio=${v.desvio}&diferencia=${v.diferencia}&litros=${v.litros}&return=gasolina`;
-
+  `https://dcsolanaprojects.github.io/coste-mensual-coche/?consumo=${v.consumo}&precio=${v.precio}&return=gasolina`;
     const linkSupermercado =
       `https://dcsolanaprojects.github.io/compensa-supermercado/?consumo=${v.consumo}&precio=${v.precio}&extraCoste=${v.extraKm}`;
 
