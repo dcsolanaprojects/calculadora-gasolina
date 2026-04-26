@@ -603,7 +603,7 @@ if (hintCosteKmEl && vieneDeCosteMensual) {
   hintCosteKmEl.innerHTML = `
     Estás utilizando un coste completo por km que incluye mantenimiento, seguro, impuestos y depreciación.
     Puedes modificarlo manualmente o calcular el coste mensual real del coche
-    <a href="https://dcsolanaprojects.github.io/coste-mensual-coche/?consumo=${consumoEl.value || ""}&precio=${precioEl.value || ""}&desvio=${desvioEl.value || ""}&diferencia=${diferenciaEl.value || ""}&litros=${litrosEl.value || ""}&return=gasolina">aquí</a>.`;
+    <a href="https://dcsolanaprojects.github.io/coste-mensual-coche/?consumo=${consumoEl.value || ""}&precio=${precioEl.value || ""}&desvio=${desvioEl.value || ""}&diferencia=${diferenciaEl.value || ""}&litros=${litrosEl.value || ""}&kmAnuales=${params.get("kmAnuales") || ""}&seguroAnual=${params.get("seguroAnual") || ""}&mantenimientoAnual=${params.get("mantenimientoAnual") || ""}&otrosAnuales=${params.get("otrosAnuales") || ""}&depreciacionAnual=${params.get("depreciacionAnual") || ""}&financiacionAnual=${params.get("financiacionAnual") || ""}&return=gasolina">aquí</a>.`;
 }
 
 if (toggleAdvancedEl && advancedBlockEl) {
@@ -624,7 +624,7 @@ if (toggleAdvancedEl && advancedBlockEl) {
         hintCosteKmEl.innerHTML = `
   Introduce aquí el coste total de tu coche por km, incluyendo mantenimiento, seguro o depreciación si quieres afinar el cálculo.
   Si no lo sabes, puedes calcular el coste mensual real del coche
-  <a href="https://dcsolanaprojects.github.io/coste-mensual-coche/?consumo=${consumoEl.value || ""}&precio=${precioEl.value || ""}&desvio=${desvioEl.value || ""}&diferencia=${diferenciaEl.value || ""}&litros=${litrosEl.value || ""}&return=gasolina">aquí</a>.`;
+  <a href="https://dcsolanaprojects.github.io/coste-mensual-coche/?consumo=${consumoEl.value || ""}&precio=${precioEl.value || ""}&desvio=${desvioEl.value || ""}&diferencia=${diferenciaEl.value || ""}&litros=${litrosEl.value || ""}&kmAnuales=${params.get("kmAnuales") || ""}&seguroAnual=${params.get("seguroAnual") || ""}&mantenimientoAnual=${params.get("mantenimientoAnual") || ""}&otrosAnuales=${params.get("otrosAnuales") || ""}&depreciacionAnual=${params.get("depreciacionAnual") || ""}&financiacionAnual=${params.get("financiacionAnual") || ""}&return=gasolina">aquí</a>.`;
       } else {
         // Cuando lo CIERRA
         hintCosteKmEl.innerHTML = hintDefault;
@@ -747,7 +747,8 @@ if (vieneDeCosteMensual && advancedBlockEl) {
       `https://dcsolanaprojects.github.io/coste-km-coche/?consumo=${v.consumo}&precio=${v.precio}&extraCoste=${v.extraKm}&desvio=${v.desvio}&diferencia=${v.diferencia}&litros=${v.litros}&return=gasolina`;
 
     const linkCosteMensual =
-  `https://dcsolanaprojects.github.io/coste-mensual-coche/?consumo=${v.consumo}&precio=${v.precio}&desvio=${v.desvio}&diferencia=${v.diferencia}&litros=${v.litros}&return=gasolina`;
+  `https://dcsolanaprojects.github.io/coste-mensual-coche/?consumo=${v.consumo}&precio=${v.precio}&desvio=${v.desvio}&diferencia=${v.diferencia}&litros=${v.litros}&kmAnuales=${params.get("kmAnuales") || ""}&seguroAnual=${params.get("seguroAnual") || ""}&mantenimientoAnual=${params.get("mantenimientoAnual") || ""}&otrosAnuales=${params.get("otrosAnuales") || ""}&depreciacionAnual=${params.get("depreciacionAnual") || ""}&financiacionAnual=${params.get("financiacionAnual") || ""}&return=gasolina`;
+
   const linkSupermercado =
       `https://dcsolanaprojects.github.io/compensa-supermercado/?consumo=${v.consumo}&precio=${v.precio}&extraCoste=${v.extraKm}`;
 
